@@ -1,41 +1,85 @@
+import { useState } from "react";
 import "./App.css";
 
 function App() {
+  const [value, setValue] = useState("0");
+
+  const handleInput = (input) => {
+    if (value === "0") {
+      setValue(input);
+    } else {
+      setValue((prevValue) => prevValue + input);
+    }
+  };
+
+  const handleDelete = () => {
+    setValue((prevValue) => prevValue.slice(0, -1));
+  };
+
+  const handleClear = () => {
+    setValue("0");
+  };
+
+  const handleCalculate = () => {
+    try {
+      setValue(eval(value).toString());
+    } catch (error) {
+      setValue("Error");
+    }
+  };
+
   return (
     <div className="App">
       <div className="card">
         <form action="" className="calculator">
           <div className="display">
-            <input type="text" />
+            <input type="text" value={value} readOnly />
           </div>
           <div>
-            <input type="button" value="AC" />
-            <input type="button" value="DE" />
-            <input type="button" value="." />
-            <input type="button" value="/" />
+            <input type="button" value="AC" onClick={handleClear} />
+            <input type="button" value="DE" onClick={handleDelete} />
+            <input type="button" value="." onClick={() => handleInput(".")} />
+            <input type="button" value="/" onClick={() => handleInput("/")} />
           </div>
           <div>
-            <input type="button" value="7" />
-            <input type="button" value="8" />
-            <input type="button" value="9" />
-            <input type="button" value="*" />
+            {[7, 8, 9, "*"].map((num) => (
+              <input
+                key={num}
+                type="button"
+                value={num}
+                onClick={() => handleInput(num.toString())}
+              />
+            ))}
           </div>
           <div>
-            <input type="button" value="4" />
-            <input type="button" value="5" />
-            <input type="button" value="6" />
-            <input type="button" value="+" />
+            {[4, 5, 6, "+"].map((num) => (
+              <input
+                key={num}
+                type="button"
+                value={num}
+                onClick={() => handleInput(num.toString())}
+              />
+            ))}
           </div>
           <div>
-            <input type="button" value="1" />
-            <input type="button" value="2" />
-            <input type="button" value="3" />
-            <input type="button" value="-" />
+            {[1, 2, 3, "-"].map((num) => (
+              <input
+                key={num}
+                type="button"
+                value={num}
+                onClick={()=>handleInput(num.toString())}
+              />
+              ))}
           </div>
           <div>
-            <input type="button" value="00" />
-            <input type="button" value="0" />
-            <input type="button" value="=" className="equal" />
+            <input type="button" value="00" onClick={() => handleInput("00")} />
+            <input type="button" value="0" onClick={() => handleInput("0")} />
+            <input
+              type="button"
+              value="="
+              className="equal"
+              onClick={handleCalculate}
+            />
           </div>
         </form>
       </div>
